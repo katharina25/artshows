@@ -29,7 +29,7 @@ $hostname = "localhost";
 $username = "root";
 $password = "";
 $dbName = "art_shows";
-$pagename = 'edit.php';
+$pagename = 'index.php';
 $num = 10;
 
 if(isset($_GET["page"]))
@@ -41,21 +41,14 @@ $page = $_GET["page"];
 function navigate($pagename, $page, $total)
 {
 if($page != 1) $firstpage = '<a href= ./'.$pagename.'?page=1><<</a> <a href= ./'.$pagename.'?page='.($page - 1).'><</a> ';
-
 if($page != $total) $nextpage = ' <a href= ./'.$pagename.'?page='.($page + 1).'>></a></a>
 <a href= ./'.$pagename.'?page='.$total.'>>></a></a>';
-
 if($page - 2 > 0) $page2left = ' <a href= ./'.$pagename.'?page='.($page - 2).'>'.($page - 2).'</a> | ';
-
 if($page - 1 > 0) $pageleft = ' <a href= ./'.$pagename.'?page='.($page - 1).'>'.($page - 1).'</a> | ';
-
 if($page + 2 <= $total) $page2right = ' | <a href= ./'.$pagename.'?page='.($page + 2).'>'.($page + 2).'</a>';
-
 if($page + 1 <= $total) $pageright = ' | <a href= ./'.$pagename.'?page='.($page + 1).'>'.($page + 1).'</a> ';
-
 echo $firstpage.$page2left.$pageleft.'<b>'.$page.'</b>'.$pageright.$page2right.$nextpage;
 }
-
 
 /*создать соединение */
 mysql_connect($hostname,$username,$password) OR DIE("Не могу создать соединение ");
@@ -70,7 +63,7 @@ mysql_query ("SET NAMES utf8");
 
 // Выполняем SQL-запрос
 $query = '
-SELECT show_start,show_name,mus_name,mus_adds FROM art_show
+SELECT show_id,show_start,show_name,mus_name,mus_adds FROM art_show
 JOIN museum on mus_id = show_mus_id
 ORDER BY show_start ';
 
@@ -81,9 +74,6 @@ $total = ((count($line)-1)/$num);
 $page = intval($page);
 if(empty($page) or $page < 0) $page = 1;
 if($page > $total) $page = $total;
-echo 'num='.$num.'<br>';
- //echo 'page='.$page.'<br>';
- //echo 'start='.$start.'<br>';
 $start = $page * $num - $num;
 if($start < 0)
 $start = 0;
@@ -92,7 +82,6 @@ $qr_limit = " LIMIT $start,$num";
 $result = mysql_query($query.$qr_limit) or die('query has dont work: ' . mysql_error());
 while ($line1[] = mysql_fetch_array($result, MYSQL_ASSOC));
 
-echo $query.$qr_limit;
 // Освобождаем память от результата
 mysql_free_result($result);
 
@@ -114,7 +103,7 @@ mysql_close($link);
     foreach ($line1 as $col_value) {  
 		echo "\t<tr>\n";
         echo "\t\t<td>$col_value[show_start]</td>\n";
-        echo "\t\t<td>$col_value[show_name]</td>\n";
+        echo "\t\t<td><a href='show.php?show=$col_value[show_id]'</a>$col_value[show_name]</td>\n";
         echo "\t\t<td>$col_value[mus_name]</td>\n";
         echo "\t\t<td>$col_value[mus_adds]</td>\n";
         echo "\t</tr>\n";
