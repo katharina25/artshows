@@ -1,23 +1,8 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
-		<style>
-	#White{
-		width: 100%;
-		background-color: #ffffff;
-	}
-	#Fond{
-		padding-top: 15;
-		width: 100%;
-		background-image: url("");
-		height: 100%;
-	}
-	.p {font-size: 11pt;}
-	</style>
-	
-</head>
-<div id="White">
-<?php
+	</head>
+	<?php
 
 /* Переменные для соединения с базой данных */
 $hostname = "localhost";
@@ -26,7 +11,7 @@ $password = "";
 $dbName = "art_shows";
 
 if (!empty($_GET["show"])) 
- {
+{
 	 $show  = $_GET["show"];
 	 $name  = $_GET["name"];
 	 $start = $_GET["start"];
@@ -51,18 +36,25 @@ mysql_query ("set character_set_results='utf8'");
 mysql_query ("set collation_connection='utf8_general_ci'");
 mysql_query ("SET NAMES utf8");
 
-// Выполняем SQL-запрос
-$query = "
+$query_mus = "
+SELECT mus_id FROM museum
+WHERE mus_name = '$mus';";
+
+
+$result = mysql_query($query_mus) or die('query has dont work: ' . mysql_error());
+$row = mysql_fetch_array($result);
+$mus_id = $row[mus_id];
+
+$query_show = "
  UPDATE art_show 
  SET show_name = '$name',
  show_start = '$start',
  show_end = '$end',
- show_style = '$style' 
- WHERE show_id = $show;";
+ show_style = '$style',
+ show_mus_id = '$mus_id'
+ WHERE show_id = '$show';";
  
-mysql_query($query);
-
-echo $name;
+mysql_query($query_show);
 
 // Освобождаем память от результата
 mysql_free_result($result);
@@ -72,5 +64,3 @@ mysql_close($link);
 
 header("Refresh: 0; url=http://artshows.loc/a.php?show=$show");
 ?>
-
-</div>
