@@ -30,31 +30,60 @@ mysql_connect($hostname,$username,$password) OR DIE("Не могу создат�
 /* выбрать базу данных. Если произойдет ошибка - вывести ее */
 mysql_select_db($dbName) or die(mysql_error());  
 
-
 mysql_query ("set_client='utf8'");
 mysql_query ("set character_set_results='utf8'");
 mysql_query ("set collation_connection='utf8_general_ci'");
 mysql_query ("SET NAMES utf8");
 
+// выбор музея из списка
 $query_mus = "
 SELECT mus_id FROM museum
 WHERE mus_name = '$mus';";
 
+$result_mus = mysql_query($query_mus) or die('query has dont work: ' . mysql_error());
+$row_mus = mysql_fetch_array($result_mus);
+$mus_id = $row_mus[mus_id];
 
-$result = mysql_query($query_mus) or die('query has dont work: ' . mysql_error());
-$row = mysql_fetch_array($result);
-$mus_id = $row[mus_id];
+// изменение контактного лица
+$query_pers = "
+SELECT pers_id FROM person
+WHERE pers_name = '$pers';";
+
+$result_pers = mysql_query($query_pers) or die('query has dont work: ' . mysql_error());
+$row_pers = mysql_fetch_array($result_pers);
+$pers_id = $row_pers[pers_id];
+
+//echo $pers_id;
+
+if ($pers_id == NULL) {
+	$result_count = mysql_query("SELECT count(*) FROM person;");
+	$row_count = mysql_fetch_array($result_count);
+	$pers_id = $row_count[0]+1; 
+	}
+	
+$query_pers_change = "INSERT INTO person (pers_id,pers_name,pers_tel,pers_adds,pers_email) 
+VALUES('$pers_id','$pers','$tel','отсутствует','$email');";
+
+echo $pers_id.$pers.$tel.$email.$show;
 
 $query_show = "
  UPDATE art_show 
- SET show_name = '$name',
+ SET show_name = '$name', 
+ show_style = '$style',
  show_start = '$start',
  show_end = '$end',
- show_style = '$style',
- show_mus_id = '$mus_id'
+ show_mus_id = '$mus_id',
+ show_pers_id = '$pers_id'
  WHERE show_id = '$show';";
  
+$query_mus_adds = "
+UPDATE museum
+SET mus_adds = '$adds'
+WHERE mus_id = '$mus_id';";
+ 
+mysql_query($query_pers_change);
 mysql_query($query_show);
+mysql_query($query_mus_adds);
 
 // Освобождаем память от результата
 mysql_free_result($result);
