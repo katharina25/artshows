@@ -56,14 +56,23 @@ JOIN museum on mus_id = show_mus_id
 JOIN person on pers_id = show_pers_id
 WHERE show_id = $show;";
 
+$query_select = "SELECT mus_name FROM museum;";
+$result_select = mysql_query($query_select) or die('query has dont work: ' . mysql_error());
+
 $result = mysql_query($query) or die('query has dont work: ' . mysql_error());
 while ($line[] = mysql_fetch_array($result, MYSQL_ASSOC)) 
 foreach ($line as $col_value) {  
-		echo "<td>Id мероприятия: <INPUT TYPE= 'text' NAME= 'show' VALUE='$show'></td><br>\n";
+		echo "<td>Id мероприятия: <INPUT TYPE= 'hidden' NAME= 'show' VALUE='$show'>$show</td><br>\n";
 	    echo "<td>Название мероприятия: <INPUT TYPE= 'text' NAME= 'name' VALUE='$col_value[show_name]'></td><br>\n";
         echo "<td>Дата: <INPUT TYPE= 'date' NAME= 'start' VALUE= '$col_value[show_start]'> - <INPUT TYPE= 'date' NAME= 'end' VALUE= '$col_value[show_end]'></td><br>\n";
-        echo "<td>Место проведения: <INPUT NAME= 'mus' VALUE= '$col_value[mus_name]'></td><br>\n";
-        echo "<td>Адрес: <INPUT NAME= 'adds' VALUE= '$col_value[mus_adds]'></td><br>\n";
+        echo "<td>Место проведения: </td>";
+        echo "<select name = 'mus'>";
+        echo "<option value='$col_value[mus_name]'>$col_value[mus_name]</option>";
+		while($object = mysql_fetch_object($result_select)){
+		echo "<option value='$object->mus_name'>$object->mus_name</option>";
+		}
+		echo "</select><br>";
+        // echo "<td>Адрес: <INPUT NAME= 'adds' VALUE= '$col_value[mus_adds]'></td><br>\n";
         echo "<td>Направление: <INPUT NAME= 'style' VALUE= '$col_value[show_style]'></td><br>\n";
         echo "<td>Контактное лицо: <INPUT NAME= 'pers' VALUE= '$col_value[pers_name]'></td><br>\n";
         echo "<td>Телефон: <INPUT NAME= 'tel' VALUE= '$col_value[pers_tel]'></td><br>\n";
@@ -71,6 +80,9 @@ foreach ($line as $col_value) {
 		echo "<td><INPUT TYPE='submit' VALUE='Сохранить изменения' ></td><br>\n";
 
     }
+    
+
+
 // Освобождаем память от результата
 mysql_free_result($result);
 
