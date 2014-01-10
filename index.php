@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
-	<style>
+		<style>
 	#White{
 		width: 100%;
 		background-color: #ffffff;
@@ -99,16 +99,17 @@ mysql_close($link);
 				 
 <?php
 // Выводим результаты в html
-  
+    echo "<a href='add.php'>Добавить выставку</a>";
     foreach ($line1 as $col_value) {  
 		echo "\t<tr>\n";
         echo "\t\t<td>$col_value[show_start]</td>\n";
-        echo "\t\t<td><a href='show.php?show=$col_value[show_id]'</a>$col_value[show_name]</td>\n";
+        echo "\t\t<td><a href='show.php?show=$col_value[show_id]'>$col_value[show_name]</a></td>\n";
         echo "\t\t<td>$col_value[mus_name]</td>\n";
         echo "\t\t<td>$col_value[mus_adds]</td>\n";
         echo "\t</tr>\n";
     }
     echo "</table>";
+    
 	echo '<center>';
 	navigate($pagename, $page, (int)$total);
 	echo '</center>';
@@ -121,5 +122,5 @@ mysql_close($link);
 </div>
 </div>
 
-
-
+</body>
+</html>
