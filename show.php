@@ -15,7 +15,7 @@
 	}
 	#Left{
 		font-size: 24pt;
-		margin: 300px 90px;
+		
 		position: fixed;
 	}
 	#Right{
@@ -27,10 +27,34 @@
 	.d {font-size: 9pt;}
 	 a{ color:green; text-decoration:none; }
 	</style>
+	<style>
+@media print
+{
 	
+	div#Left {
+		display: none;
+		}
+	div#Right {
+		display: none;
+		}
+	div#Show{
+		margin: 0px 0px;
+		float: center;
+		width: 22 cm;
+		text-align: center;
+	}
+	lk{
+		display: none;
+	}
+	
+}
+
+    </style>
 </head>
-<p style="position: fixed;"><a href='index.php'>На главную</a></p> 
+
 <div id="Left">
+<p style="font-size: 11pt;"><a href='index.php'>На главную</a></p> 
+<p style="position: fixed; top: 92%; font-size: 11pt;"><input type="button" value="Печать" onclick="javascript:print()"></p>
 <?php
 /* Переменные для соединения с базой данных */
 $hostname = "localhost";
@@ -90,7 +114,7 @@ SELECT show_id
 FROM art_show
 ORDER BY show_start';
 
-if ($show > 1) echo "<a href='show.php?show=$show_pred'><</a>";
+if ($show > 1) echo "<p style='margin: 300px 90px;'> <a href='show.php?show=$show_pred'><</a></p>";
 
 echo "</div>";
 echo "<div id='Right'>";   
@@ -105,7 +129,7 @@ if ($show < $show_count) echo "<a href='show.php?show=$show_next'>></a>";
 
 // Выполняем SQL-запрос
 $query = "
-SELECT show_start,show_end,show_name,show_style,mus_name,mus_adds,pers_name,pers_tel,pers_email FROM art_show
+SELECT show_start,show_end,show_name,show_style,mus_id,mus_name,mus_adds,pers_name,pers_tel,pers_email FROM art_show
 JOIN museum on mus_id = show_mus_id
 JOIN person on pers_id = show_pers_id
 WHERE show_id = $show;";
@@ -114,7 +138,7 @@ $result = mysql_query($query) or die('query has dont work: ' . mysql_error());
 while ($line[] = mysql_fetch_array($result, MYSQL_ASSOC)) 
 foreach ($line as $col_value) {  
 		echo "<h1>$col_value[show_name]</h1><br>";
-		echo "<a href='mus.php?mus=$col_value[mus_name]'>$col_value[mus_name]</a><br>";
+		echo "<a href='mus.php?mus=$col_value[mus_id]'>$col_value[mus_name]</a><br>";
         echo "<td>Дата: $col_value[show_start] - $col_value[show_end]</td><br>";
         
         echo "<td>Адрес: $col_value[mus_adds]</td><br>";
@@ -122,8 +146,8 @@ foreach ($line as $col_value) {
         echo "<td>Контактное лицо: $col_value[pers_name]</td><br>";
         echo "<td>Телефон: $col_value[pers_tel]</td><br>";
 		echo "<td>E-mail: $col_value[pers_email]</td><br>";
-		echo "<td><a href='a.php?show=$show'</a>Редактировать...</td><br>";
-		echo "<td><a href='delete.php?show=$show'</a>Удалить выставку</td><br>";
+		echo "<lk><td><a href='a.php?show=$show'</a>Редактировать...</td><br>";
+		echo "<td><a href='delete.php?show=$show'</a>Удалить выставку</td><br></lk>";
     }
 // Освобождаем память от результата
 mysql_free_result($result);
