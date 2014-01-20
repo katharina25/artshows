@@ -1,6 +1,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
+    <style>body{background:beige;}</style>
 </head>
 <form method="get" action="add_s.php">
 
@@ -27,11 +28,8 @@ mysql_query ("SET NAMES utf8");
 $query_mus = "SELECT mus_name FROM museum;";
 $result_mus = mysql_query($query_mus) or die('query has dont work: ' . mysql_error());
 
-
-
-
 //echo "<td>Id мероприятия: <INPUT TYPE= 'text' NAME= 'show' VALUE='$show'></td><br>\n";
-echo "<td>Название мероприятия: <INPUT TYPE= 'text' NAME= 'name' VALUE='$col_value[show_name]'></td><br>\n";
+echo "<td>Название мероприятия: <INPUT TYPE= 'text' SIZE='50' NAME= 'name' VALUE='$col_value[show_name]'></td><br>\n";
 echo "<td>Дата: <INPUT TYPE= 'date' NAME= 'start' VALUE= '$col_value[show_start]'> - <INPUT TYPE= 'date' NAME= 'end' VALUE= '$col_value[show_end]'></td><br>\n";
 echo "<td>Место проведения: </td>";
 echo "<select name = 'mus'>";

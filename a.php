@@ -2,21 +2,25 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
 		<style>
+			body{background:beige;}
 	#White{
-		width: 100%;
-		background-color: #ffffff;
+
+		
 	}
 	#Fond{
+		
+		padding: 20px;
 		padding-top: 15;
 		width: 100%;
 		background-image: url("");
+		background-color: #ffcc66;
 		height: 100%;
 	}
 	.p {font-size: 11pt;}
 	</style>
 	
 </head>
-<div id="White">
+<center>
 
 <?php
 
@@ -63,7 +67,7 @@ $result = mysql_query($query) or die('query has dont work: ' . mysql_error());
 while ($line[] = mysql_fetch_array($result, MYSQL_ASSOC)) 
 foreach ($line as $col_value) {  
 		echo "<td>Id мероприятия: <INPUT TYPE= 'hidden' NAME= 'show' VALUE='$show'>$show</td><br>\n";
-	    echo "<td>Название мероприятия: <INPUT TYPE= 'text' NAME= 'name' VALUE='$col_value[show_name]'></td><br>\n";
+	    echo "<td>Название мероприятия: <INPUT TYPE= 'text' SIZE='50' NAME= 'name' VALUE='$col_value[show_name]'></td><br>\n";
         echo "<td>Дата: <INPUT TYPE= 'date' NAME= 'start' VALUE= '$col_value[show_start]'> - <INPUT TYPE= 'date' NAME= 'end' VALUE= '$col_value[show_end]'></td><br>\n";
         echo "<td>Место проведения: </td>";
         echo "<select name = 'mus'>";
@@ -91,4 +95,4 @@ mysql_close($link);
 
 ?>
 </form>
-</div>
+</center>

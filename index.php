@@ -9,10 +9,11 @@
 	#Fond{
 		padding-top: 15;
 		width: 100%;
-		background-image: url("http://s2.goodfon.ru/image/577452-1366x768.jpg");
+		background-image: url("winter.jpg");
 		height: 100%;
 	}
 	.p {font-size: 11pt;}
+	a{ color:brown; text-decoration:none; }
 	</style>
 	
 </head>
@@ -70,7 +71,7 @@ ORDER BY show_start ';
 $result = mysql_query($query) or die('Запрос не удался: ' . mysql_error());
 while ($line[] = mysql_fetch_array($result, MYSQL_ASSOC)) ;
 
-$total = ((count($line)-1)/$num);
+$total = ((count($line)-1)/$num+1);
 $page = intval($page);
 if(empty($page) or $page < 0) $page = 1;
 if($page > $total) $page = $total;
@@ -104,7 +105,7 @@ mysql_close($link);
 		echo "\t<tr>\n";
         echo "\t\t<td>$col_value[show_start]</td>\n";
         echo "\t\t<td><a href='show.php?show=$col_value[show_id]'>$col_value[show_name]</a></td>\n";
-        echo "\t\t<td>$col_value[mus_name]</td>\n";
+        echo "\t\t<td><a href='mus.php?mus=$col_value[mus_name]'>$col_value[mus_name]</a></td>\n";
         echo "\t\t<td>$col_value[mus_adds]</td>\n";
         echo "\t</tr>\n";
     }
