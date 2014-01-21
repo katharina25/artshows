@@ -79,6 +79,10 @@ if (!empty($_GET["show"]))
 	 $show = $_GET["show"];
 } 
 
+$result_count = mysql_query("SELECT show_id FROM art_show ORDER BY show_id DESC LIMIT 1;");
+$row_count = mysql_fetch_array($result_count);
+$show_count = $row_count[0];
+
 $show_pred = $show-1;
 $show_next = $show+1;
 
@@ -94,7 +98,7 @@ $row_test2 = mysql_fetch_array($result_test2);
 if (!$row_test1[0]) $show_pred = $show_pred-1;
 if (!$row_test2[0]) $show_next = $show_next+1;
 }
-while (!$row_test1[0] || !$row_test2[0]);
+while ((!$row_test1[0] || !$row_test2[0]) && $show_pred>1 && $show_next<$show_count);
 
 $query_mus_show = "
 SELECT show_name FROM art_show 
@@ -102,9 +106,8 @@ WHERE show_mus_id IN
 (SELECT show_mus_id FROM art_show
 WHERE show_id = $show);";
 
-$result_count = mysql_query("SELECT count(*) FROM art_show;");
-$row_count = mysql_fetch_array($result_count);
-$show_count = $row_count[0]; 
+
+
 
 
 
@@ -118,6 +121,7 @@ if ($show > 1) echo "<p style='margin: 300px 90px;'> <a href='show.php?show=$sho
 
 echo "</div>";
 echo "<div id='Right'>";   
+	          
 	                                                            
 if ($show < $show_count) echo "<a href='show.php?show=$show_next'>></a>";
 

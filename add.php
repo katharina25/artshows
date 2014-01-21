@@ -44,7 +44,6 @@ echo "<td>Контактное лицо: <INPUT NAME= 'pers' VALUE= '$col_value[
 echo "<td>Телефон: <INPUT NAME= 'tel' VALUE= '$col_value[pers_tel]'></td><br>\n";
 echo "<td>E-mail: <INPUT NAME= 'email' VALUE= '$col_value[pers_email]'></td><br>\n";
 echo "<td><INPUT TYPE='submit' VALUE='Сохранить изменения' ></td><br>\n";
-
 // Освобождаем память от результата
 mysql_free_result($result);
 
@@ -54,3 +53,4 @@ mysql_close($link);
 //header("Refresh: 0; url=http://artshows.loc");
 
 ?>
+<input type=button onClick="parent.location='http://artshows.loc/index.php'" value='На главную'>
